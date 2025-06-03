@@ -22,6 +22,6 @@ public class CriarUsuarioRequestDTO {
     private LocalDate dataNascimento;
 
     @NotEmpty(message = "Informe uma senha")
-    @Size(min = 6, max = 12, message = "A senha deve ter no mínimo 6 no máximo 12 caracteres")
+    @Size(min = 6, max = 12, message = "A senha deve ter no mínimo 6 e no máximo 12 caracteres")
     private String senha;
 }

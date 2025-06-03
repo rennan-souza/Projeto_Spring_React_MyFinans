@@ -1,0 +1,195 @@
+// $primary: #0d6efd;
+$primary: #ffc107;
+$secondary: #6c757d;
+$success: #198754;
+$info: #0dcaf0;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #dee2e6;
+$dark: #212529;
+
+$white: #fff;
+$border-color: #ced4da;
+$body-bg: $light;
+$body-color: $dark;
+
+.form-control {
+    background-color: $white !important;
+    box-shadow: none !important;
+}
+
+.form-control:focus {
+    border-color: $border-color !important;
+    outline: 1px solid $border-color !important;
+}
+
+.form-select {
+    background-color: $white !important;
+    box-shadow: none !important;
+}
+
+.form-select:focus {
+    border-color: $border-color !important;
+    outline: 1px solid $border-color !important;
+}
+
+input:disabled {
+    background-color: $light !important;
+}
+
+select:disabled {
+    background-color: $light !important;
+}
+
+.base-link {
+    text-decoration: none !important;
+}
+
+.base-link:hover {
+    opacity: 0.8 !important;
+}
+
+.c-navbar {
+    width: 100%;
+    height: 60px;
+    background-color: $primary;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+}
+
+.btn-sidebar-toggle {
+    margin-left: 30px;
+}
+
+.btn-sidebar-toggle i {
+    font-size: 25px;
+    cursor: pointer;
+    display: none;
+}
+
+.c-navbar-logo {
+    text-decoration: none;
+    color: $dark;
+    font-size: 25px;
+}
+
+.c-navbar-user-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.c-navbar-user-container p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    margin-bottom: 0;
+    margin-right: 10px;
+    color: $dark;
+}
+
+.sidebar-bg {
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(000, 000, 000, 0.2);
+    display: none;
+    position: fixed;
+    z-index: 8;
+    top: 0;
+    left: 0;
+}
+
+.c-sidebar {
+    width: 240px;
+    height: 100vh;
+    background-color: $white;
+    border-right: 1px solid $border-color;
+    margin-top: 60px;
+    position: fixed;
+    z-index: 9;
+    top: 0;
+    left: 0;
+}
+
+.c-sidebar a {
+    display: flex;
+    align-items: center;
+    color: $secondary;
+    text-decoration: none;
+}
+
+.c-sidebar a i {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.c-sidebar a:hover {
+    color: $primary;
+}
+
+.c-sidebar-link-active {
+    color: $primary !important;
+}
+
+.content {
+    margin: 80px 20px 10px 260px;
+}
+
+.c-card {
+    width: 100%;
+    height: auto;
+    background-color: $white;
+    padding: 20px;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+}
+
+
+@media(max-width: 576px) {
+    .c-navbar-logo {
+        display: none
+    }
+
+    .c-navbar-user-container p {
+        display: none;
+    }
+
+    .btn-sidebar-toggle {
+        margin-left: 0;
+    }
+}
+
+@media(max-width: 992px) {
+
+    .sidebar-bg-expand {
+        display: unset;
+    }
+
+    .c-sidebar {
+        display: none;
+    }
+
+    .sidebar-expand {
+        display: unset;
+    }
+
+    .btn-sidebar-toggle i {
+        display: unset;
+    }
+
+    .content {
+        margin: 80px 20px 10px 20px;
+    }
+}
+
+
+@import '../node_modules/bootstrap/scss/bootstrap.scss';

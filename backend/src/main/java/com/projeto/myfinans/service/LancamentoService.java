@@ -51,7 +51,8 @@ public class LancamentoService {
     }
 
     @Transactional(readOnly = true)
-    public List<LancamentoResponseDTO> listar() {
-        return lancamentoMapper.toDtoList(lancamentoRepository.findByUsuarioId(authorizationService.usuarioLogado().getId()));
+    public List<LancamentoResponseDTO> buscarComFiltros(Long usuarioId, String titulo, Long tipoId, Long categoriaId, Long subcategoriaId) {
+        List<Lancamento> lista = lancamentoRepository.buscarComFiltros(usuarioId, titulo, tipoId, categoriaId, subcategoriaId);
+        return lancamentoMapper.toDtoList(lista);
     }
 }

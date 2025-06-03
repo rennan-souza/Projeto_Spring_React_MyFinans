@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class LancamentoRequestDTO {
+public class    LancamentoRequestDTO {
 
     @NotEmpty(message = "Informe o título")
     private String titulo;
