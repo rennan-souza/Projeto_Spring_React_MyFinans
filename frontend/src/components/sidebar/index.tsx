@@ -20,6 +20,11 @@ function Sidebar() {
                     <i className="bi bi-search"></i>
                     Buscar lançamentos
                 </NavLink>
+
+                <NavLink to="/buscar-lancamentos"  onClick={removeSidebarExpand}>
+                    <i className="bi bi-person-fill-gear"></i>
+                    Meus dados
+                </NavLink>
             </div>
         </>
     )

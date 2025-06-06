@@ -203,6 +203,7 @@ function BuscarLancamentos() {
                 <table className="table table-primary">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Titulo</th>
                             <th>Tipo</th>
                             <th>Categoria</th>
@@ -214,8 +215,9 @@ function BuscarLancamentos() {
                     <tbody>
                         {lancamentos.map((x) => (
                             <tr key={x.id}>
+                                <td>{x.id}</td>
                                 <td>{x.titulo}</td>
-                                <td>{x.tipoLancamento}</td>
+                                <td>{x.tipoLancamento === 'Entrada' ? <span className="badge bg-success">{x.tipoLancamento}</span> : <span className="badge bg-danger">{x.tipoLancamento}</span>}</td>
                                 <td>{x.categoria}</td>
                                 <td>{x.subcategoria}</td>
                                 <td>{x.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
