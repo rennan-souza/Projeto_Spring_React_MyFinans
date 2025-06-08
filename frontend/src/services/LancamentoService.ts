@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { CadastrarLancamentoType } from "../types/CadastrarLancamentoType";
-import type { LancamentoResponseType } from "../types/LancamentoResponseType";
+import type { LancamentoQueryResultType } from "../types/LancamentoQueryResultType"; // Adicione esta importação
 
 const baseURL: string = "http://localhost:8080/api";
 
@@ -50,14 +50,25 @@ export async function buscarLancamentosComFiltros(
     titulo?: string,
     tipoId?: number,
     categoriaId?: number,
-    subcategoriaId?: number
-): Promise<LancamentoResponseType[]> {
+    subcategoriaId?: number,
+    dataInicio?: string,
+    dataFim?: string,
+    page: number = 0,
+    size: number = 10,
+    sort: string = "data,desc"
+): Promise<LancamentoQueryResultType> {
     const params = new URLSearchParams();
 
     if (titulo) params.append("titulo", titulo);
     if (tipoId) params.append("tipoId", tipoId.toString());
     if (categoriaId) params.append("categoriaId", categoriaId.toString());
     if (subcategoriaId) params.append("subcategoriaId", subcategoriaId.toString());
+    if (dataInicio) params.append("dataInicio", dataInicio);
+    if (dataFim) params.append("dataFim", dataFim);
+
+    params.append("page", page.toString());
+    params.append("size", size.toString());
+    params.append("sort", sort); // Parâmetro de ordenação
 
     const response = await axios.get(`${baseURL}/lancamentos`, {
         params,

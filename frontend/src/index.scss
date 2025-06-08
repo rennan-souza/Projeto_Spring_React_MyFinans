@@ -13,6 +13,37 @@ $border-color: #ced4da;
 $body-bg: $light;
 $body-color: $dark;
 
+.page-link {
+    background-color: $light !important;
+    color: $dark !important;
+    box-shadow: none !important;
+}
+
+.page-link:hover {
+    background-color: $white !important;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: $white !important;
+    color: $dark !important;
+    border-color: $border-color !important;
+    pointer-events: none !important;
+}
+
+.pagination .page-item.disabled .page-link {
+    background-color: $white !important;
+    color: $dark !important;
+    border-color: $border-color !important;
+    pointer-events: none !important;
+}
+
+.pagination .page-item.disabled-ellipsis-start .page-link {
+    background-color: $light !important;
+    color: $dark !important;
+    border-color: $border-color !important;
+    pointer-events: none !important;
+}
+
 .form-control {
     background-color: $white !important;
     box-shadow: none !important;

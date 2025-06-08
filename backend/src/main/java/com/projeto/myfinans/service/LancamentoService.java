@@ -1,5 +1,6 @@
 package com.projeto.myfinans.service;
 
+import com.projeto.myfinans.dto.LancamentoQueryResultDTO;
 import com.projeto.myfinans.dto.LancamentoRequestDTO;
 import com.projeto.myfinans.dto.LancamentoResponseDTO;
 import com.projeto.myfinans.entity.Lancamento;
@@ -9,10 +10,14 @@ import com.projeto.myfinans.exception.CustomException;
 import com.projeto.myfinans.mapper.LancamentoMapper;
 import com.projeto.myfinans.repository.LancamentoRepository;
 import com.projeto.myfinans.repository.SubcategoriaLancamentoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -51,8 +56,27 @@ public class LancamentoService {
     }
 
     @Transactional(readOnly = true)
-    public List<LancamentoResponseDTO> buscarComFiltros(Long usuarioId, String titulo, Long tipoId, Long categoriaId, Long subcategoriaId) {
-        List<Lancamento> lista = lancamentoRepository.buscarComFiltros(usuarioId, titulo, tipoId, categoriaId, subcategoriaId);
-        return lancamentoMapper.toDtoList(lista);
+    public LancamentoQueryResultDTO buscarComFiltros(
+            Long usuarioId, String titulo, Long tipoId, Long categoriaId, Long subcategoriaId, LocalDate dataInicio,
+            LocalDate dataFim, Pageable pageable) {
+
+        // Busca os lançamentos paginados
+        Page<Lancamento> listaLancamentos = lancamentoRepository.buscarComFiltros(usuarioId, titulo,
+                tipoId, categoriaId, subcategoriaId, dataInicio, dataFim, pageable);
+
+        // Mapeia os lançamentos para DTOs
+        Page<LancamentoResponseDTO> lancamentosMapeados = listaLancamentos.map(lancamentoMapper::toDto);
+
+        // Calcula os totais de entradas e saídas (sem paginação, com os mesmos filtros)
+        BigDecimal totalEntradas = lancamentoRepository.calcularTotalEntradas(
+                usuarioId, titulo, tipoId, categoriaId, subcategoriaId, dataInicio, dataFim);
+        BigDecimal totalSaidas = lancamentoRepository.calcularTotalSaidas(
+                usuarioId, titulo, tipoId, categoriaId, subcategoriaId, dataInicio, dataFim);
+
+        // Calcula o saldo total
+        BigDecimal saldoTotal = totalEntradas.subtract(totalSaidas);
+
+        // Retorna o DTO de resultado completo
+        return new LancamentoQueryResultDTO(lancamentosMapeados, totalEntradas, totalSaidas, saldoTotal);
     }
 }
