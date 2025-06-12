@@ -191,9 +191,14 @@ select:disabled {
 .bar-chart {
     width: 100%;
     min-width: 800px;
-    height: 400px;
+    height: 300px;
 }
 
+.pie-chart {
+    width: 100%;
+    min-width: 800px;
+    height: 300px;
+}
 
 @media(max-width: 576px) {
     .c-navbar-logo {

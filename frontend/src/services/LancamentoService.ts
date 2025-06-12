@@ -2,6 +2,7 @@ import axios from "axios";
 import type { CadastrarLancamentoType } from "../types/CadastrarLancamentoType";
 import type { LancamentoQueryResultType } from "../types/LancamentoQueryResultType"; // Adicione esta importação
 import type { BalancoMensalType } from "../types/BalancoMensalType";
+import type { GastoPorCategoriaType } from "../types/GastoPorCategoriaType";
 
 const baseURL: string = "http://localhost:8080/api";
 
@@ -86,6 +87,21 @@ export async function buscarBalancoMensal(ano: number): Promise<BalancoMensalTyp
     params.append("ano", ano.toString());
 
     const response = await axios.get<BalancoMensalType[]>(`${baseURL}/lancamentos/relatorios/balanco-mensal`, {
+        params,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+    });
+    return response.data;
+}
+
+
+export async function buscarGastosPorCategoria(ano: number): Promise<GastoPorCategoriaType[]> {
+    const params = new URLSearchParams();
+
+    params.append("ano", ano.toString());
+
+    const response = await axios.get<GastoPorCategoriaType[]>(`${baseURL}/lancamentos/relatorios/gastos-por-categoria`, {
         params,
         headers: {
             'Authorization': `Bearer ${localStorage.getItem("token")}`

@@ -96,7 +96,7 @@ function BarChart({ data, anoSelecionado }: BarChartProps) {
 
     return (
         <div className="chart-card">
-            <div className="bar-chart">
+            <div className="bar-chart mb-5">
                 <Bar options={options} data={chartData} />
             </div>
         </div>

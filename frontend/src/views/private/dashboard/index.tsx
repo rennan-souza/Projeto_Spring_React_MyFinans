@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
-import { buscarBalancoMensal } from '../../../services/LancamentoService';
+import { buscarBalancoMensal, buscarGastosPorCategoria } from '../../../services/LancamentoService';
 import type { BalancoMensalType } from '../../../types/BalancoMensalType';
+import type { GastoPorCategoriaType } from '../../../types/GastoPorCategoriaType';
 import BarChart from '../../../components/bar-chart';
+import PieChart from '../../../components/pie-chart';
 
 function Dashboard() {
     const [balancoMensal, setBalancoMensal] = useState<BalancoMensalType[]>([]);
-    const [gastosPorCategoria, setGastosPorCategoria] = useState<any[]>([]); // Usando 'any' por enquanto, crie GastoPorCategoriaType depois
+    const [gastosPorCategoria, setGastosPorCategoria] = useState<GastoPorCategoriaType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [anoSelecionado, setAnoSelecionado] = useState<number>(new Date().getFullYear());
 
-    // Efeito para buscar todos os dados quando o ano selecionado mudar
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -20,29 +21,27 @@ function Dashboard() {
                 const balancoDados = await buscarBalancoMensal(anoSelecionado);
                 setBalancoMensal(balancoDados);
 
-                // TODO: Descomentar e implementar a busca para Gastos por Categoria (Gráfico de Pizza)
-                // const gastosDados = await buscarGastosPorCategoria(anoSelecionado);
-                // setGastosPorCategoria(gastosDados);
+                // Busca para Gastos por Categoria (Gráfico de Pizza)
+                const gastosDados = await buscarGastosPorCategoria(anoSelecionado);
+                setGastosPorCategoria(gastosDados);
 
             } catch (err: any) {
                 setError("Erro ao carregar dados dos gráficos: " + (err.response?.data?.message || err.message));
-                console.error(err); // Log para debug
+                console.error(err);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, [anoSelecionado]); // Ambos dependem do mesmo ano selecionado
+    }, [anoSelecionado]);
 
-    // Gera uma lista de anos para o dropdown (ex: ano atual - 3 até ano atual + 3)
     const anosDisponiveis = Array.from({ length: 7 }, (_, i) => new Date().getFullYear() - 3 + i);
 
     return (
         <div className="c-card">
             <h1>Dashboard Financeiro</h1>
 
-            {/* Input de filtro de ano - ÚNICO para todos os gráficos */}
             <div className="mb-3">
                 <label htmlFor="anoSelect" className="form-label me-2">Ano:</label>
                 <select
@@ -62,24 +61,15 @@ function Dashboard() {
 
             {!loading && !error && (
                 <>
-                    {/* Componente Gráfico de Barras */}
-                    <div className="mb-4" style={{ height: '400px' }}>
-                        <BarChart
-                            data={balancoMensal}
-                            anoSelecionado={anoSelecionado}
-                        />
-                    </div>
+                    <BarChart
+                        data={balancoMensal}
+                        anoSelecionado={anoSelecionado}
+                    />
 
-                    {/* TODO: Descomentar este bloco quando tiver o componente PieChartComponent e os dados */}
-                    {/* Componente Gráfico de Pizza/Rosca */}
-                    {/*
-                    <div style={{ height: '400px' }}>
-                        <PieChartComponent
-                            data={gastosPorCategoria}
-                            anoSelecionado={anoSelecionado}
-                        />
-                    </div>
-                    */}
+                    <PieChart
+                        data={gastosPorCategoria}
+                        anoSelecionado={anoSelecionado}
+                    />
                 </>
             )}
 
