@@ -12,7 +12,7 @@ function PrivateRoute({ children, perfis }: { children: JSX.Element, perfis?: st
 
     if (perfis) {
         if (!hasAnyPerfis(perfis)) {
-            return <Navigate to="/home" />
+            return <Navigate to="/dashboard" />
         }
     }
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { CadastrarLancamentoType } from "../types/CadastrarLancamentoType";
 import type { LancamentoQueryResultType } from "../types/LancamentoQueryResultType"; // Adicione esta importação
+import type { BalancoMensalType } from "../types/BalancoMensalType";
 
 const baseURL: string = "http://localhost:8080/api";
 
@@ -71,6 +72,20 @@ export async function buscarLancamentosComFiltros(
     params.append("sort", sort); // Parâmetro de ordenação
 
     const response = await axios.get(`${baseURL}/lancamentos`, {
+        params,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+    });
+    return response.data;
+}
+
+export async function buscarBalancoMensal(ano: number): Promise<BalancoMensalType[]> {
+    const params = new URLSearchParams();
+
+    params.append("ano", ano.toString());
+
+    const response = await axios.get<BalancoMensalType[]>(`${baseURL}/lancamentos/relatorios/balanco-mensal`, {
         params,
         headers: {
             'Authorization': `Bearer ${localStorage.getItem("token")}`

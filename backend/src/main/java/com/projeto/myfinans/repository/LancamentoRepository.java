@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
@@ -78,5 +79,22 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
             @Param("subcategoriaId") Long subcategoriaId,
             @Param("dataInicio") LocalDate dataInicio,
             @Param("dataFim") LocalDate dataFim
+    );
+
+    // Metodo para buscar balanço mensal para gráficos
+    @Query("""
+    SELECT
+        FUNCTION('FORMATDATETIME', l.data, 'yyyy-MM') AS mesAno,
+        COALESCE(SUM(CASE WHEN l.subcategoria.categoria.tipoLancamento.descricao = 'Entrada' THEN l.valor ELSE 0 END), 0.0) AS totalEntradas,
+        COALESCE(SUM(CASE WHEN l.subcategoria.categoria.tipoLancamento.descricao = 'Saída' THEN l.valor ELSE 0 END), 0.0) AS totalSaidas
+    FROM Lancamento l
+    WHERE l.usuario.id = :usuarioId
+      AND FUNCTION('YEAR', l.data) = :ano
+    GROUP BY mesAno
+    ORDER BY mesAno
+    """)
+    List<Object[]> buscarBalancoMensal(
+            @Param("usuarioId") Long usuarioId,
+            @Param("ano") int ano
     );
 }

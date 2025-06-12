@@ -1,12 +1,12 @@
 package com.projeto.myfinans.controller;
 
+import com.projeto.myfinans.dto.BalancoMensalDTO;
 import com.projeto.myfinans.dto.LancamentoQueryResultDTO;
 import com.projeto.myfinans.dto.LancamentoRequestDTO;
 import com.projeto.myfinans.dto.LancamentoResponseDTO;
 import com.projeto.myfinans.service.AuthorizationService;
 import com.projeto.myfinans.service.LancamentoService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -48,5 +48,12 @@ public class LancamentoController {
         LancamentoQueryResultDTO resultado = lancamentoService.buscarComFiltros(
                 usuarioId, titulo, tipoId, categoriaId, subcategoriaId, dataInicio, dataFim, pageable);
         return ResponseEntity.ok(resultado);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    @GetMapping("/relatorios/balanco-mensal")
+    public ResponseEntity<List<BalancoMensalDTO>> getBalancoMensal(@RequestParam int ano) {
+        List<BalancoMensalDTO> balanco = lancamentoService.buscarBalancoMensal(ano);
+        return ResponseEntity.ok(balanco);
     }
 }

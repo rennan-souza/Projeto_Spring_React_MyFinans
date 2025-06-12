@@ -6,9 +6,9 @@ function Sidebar() {
         <>
             <div className="sidebar-bg" id="sidebarBg" onClick={sidebarExpand}></div>
             <div className="c-sidebar" id="sidebar">
-                <NavLink to="/home" className={({ isActive }) => isActive ? "c-sidebar-link-active" : ""} onClick={removeSidebarExpand}>
-                    <i className="bi bi-house-check"></i>
-                    Home
+                <NavLink to="/dashboard" className={({ isActive }) => isActive ? "c-sidebar-link-active" : ""} onClick={removeSidebarExpand}>
+                    <i className="bi bi-graph-up"></i>
+                    Dashboard
                 </NavLink>
 
                 <NavLink to="/cadastrar-lancamento" className={({ isActive }) => isActive ? "c-sidebar-link-active" : ""} onClick={removeSidebarExpand}>

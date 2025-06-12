@@ -1,5 +1,6 @@
 package com.projeto.myfinans.service;
 
+import com.projeto.myfinans.dto.BalancoMensalDTO;
 import com.projeto.myfinans.dto.LancamentoQueryResultDTO;
 import com.projeto.myfinans.dto.LancamentoRequestDTO;
 import com.projeto.myfinans.dto.LancamentoResponseDTO;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LancamentoService {
@@ -78,5 +80,20 @@ public class LancamentoService {
 
         // Retorna o DTO de resultado completo
         return new LancamentoQueryResultDTO(lancamentosMapeados, totalEntradas, totalSaidas, saldoTotal);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BalancoMensalDTO> buscarBalancoMensal(int ano) {
+        Long usuarioId = authorizationService.usuarioLogado().getId();
+
+        List<Object[]> resultadosRaw = lancamentoRepository.buscarBalancoMensal(usuarioId, ano);
+
+        return resultadosRaw.stream()
+                .map(row -> new BalancoMensalDTO(
+                        (String) row[0],         // mesAno
+                        (BigDecimal) row[1],     // totalEntradas
+                        (BigDecimal) row[2]      // totalSaidas
+                ))
+                .collect(Collectors.toList());
     }
 }

@@ -184,6 +184,16 @@ select:disabled {
     border-radius: 6px;
 }
 
+.grafico-card {
+    overflow-x: auto;
+}
+
+.grafico-barra {
+    width: 100%;
+    min-width: 800px;
+    height: 400px;
+}
+
 
 @media(max-width: 576px) {
     .c-navbar-logo {
@@ -218,7 +228,7 @@ select:disabled {
     }
 
     .content {
-        margin: 80px 20px 10px 20px;
+        margin: 80px 10px 10px 10px;
     }
 }
 

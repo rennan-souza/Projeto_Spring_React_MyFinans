@@ -31,7 +31,7 @@ function Login() {
             localStorage.setItem("token", res.data.token);
             setAuthContextData({ authenticated: true });
             console.log(res)
-            navigate("/home");
+            navigate("/dashboard");
         }).catch(() => {
             setAlertMessage(true);
             setLoad(false)
