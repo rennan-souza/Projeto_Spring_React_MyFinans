@@ -81,7 +81,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
             @Param("dataFim") LocalDate dataFim
     );
 
-    // Metodo para buscar balanço mensal para gráficos
+    // Metodo para buscar balanço mensal para gráficos (Gráfico de barras)
     @Query("""
     SELECT
         FUNCTION('FORMATDATETIME', l.data, 'yyyy-MM') AS mesAno,
@@ -94,6 +94,23 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
     ORDER BY mesAno
     """)
     List<Object[]> buscarBalancoMensal(
+            @Param("usuarioId") Long usuarioId,
+            @Param("ano") int ano
+    );
+
+    // Metodo para buscar gastos por categoria para gráficos (Gráfico de Pizza/Rosca)
+    @Query("""
+    SELECT
+        l.subcategoria.categoria.nome,
+        COALESCE(SUM(l.valor), 0.0)
+    FROM Lancamento l
+    WHERE l.usuario.id = :usuarioId
+      AND FUNCTION('YEAR', l.data) = :ano
+      AND l.subcategoria.categoria.tipoLancamento.descricao = 'Saída'
+    GROUP BY l.subcategoria.categoria.nome
+    ORDER BY COALESCE(SUM(l.valor), 0.0) DESC
+    """)
+    List<Object[]> buscarGastosPorCategoria(
             @Param("usuarioId") Long usuarioId,
             @Param("ano") int ano
     );

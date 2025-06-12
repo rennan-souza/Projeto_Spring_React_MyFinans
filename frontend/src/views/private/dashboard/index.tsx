@@ -1,117 +1,48 @@
 import { useEffect, useState } from 'react';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import type { BalancoMensalType } from '../../../types/BalancoMensalType';
 import { buscarBalancoMensal } from '../../../services/LancamentoService';
-
-
-// Registrar os componentes necessários do Chart.js
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
+import type { BalancoMensalType } from '../../../types/BalancoMensalType';
+import BarChart from '../../../components/bar-chart';
 
 function Dashboard() {
     const [balancoMensal, setBalancoMensal] = useState<BalancoMensalType[]>([]);
+    const [gastosPorCategoria, setGastosPorCategoria] = useState<any[]>([]); // Usando 'any' por enquanto, crie GastoPorCategoriaType depois
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [anoSelecionado, setAnoSelecionado] = useState<number>(new Date().getFullYear()); // Ano atual por padrão
+    const [anoSelecionado, setAnoSelecionado] = useState<number>(new Date().getFullYear());
 
-    // Opções do gráfico (configuração visual)
-    const options = {
-        responsive: true,
-        maintainAspectRatio: false, // Permite controlar a altura/largura via CSS
-        plugins: {
-            legend: {
-                position: 'top' as const,
-            },
-            title: {
-                display: true,
-                text: `Balanço Mensal - ${anoSelecionado}`,
-            },
-            tooltip: {
-                callbacks: {
-                    label: function (context: any) {
-                        let label = context.dataset.label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        if (context.parsed.y !== null) {
-                            label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
-                        }
-                        return label;
-                    }
-                }
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    callback: function (value: string | number) {
-                        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value));
-                    }
-                }
-            }
-        }
-    };
-
-    // Dados do gráfico (preparados para o Chart.js)
-    const data = {
-        labels: balancoMensal.map(item => {
-            const [ano, mes] = item.mesAno.split('-');
-            return `${mes}/${ano}`; // Formato "MM/AAAA" para os labels do eixo X
-        }),
-        datasets: [
-            {
-                label: 'Entradas',
-                data: balancoMensal.map(item => item.totalEntradas),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)', // Cor verde-água para entradas
-            },
-            {
-                label: 'Saídas',
-                data: balancoMensal.map(item => item.totalSaidas),
-                backgroundColor: 'rgba(255, 99, 132, 0.6)', // Cor vermelha para saídas
-            },
-        ],
-    };
-
+    // Efeito para buscar todos os dados quando o ano selecionado mudar
     useEffect(() => {
-        const fetchBalancoMensal = async () => {
+        const fetchData = async () => {
             setLoading(true);
             setError(null);
             try {
-                const dados = await buscarBalancoMensal(anoSelecionado);
-                setBalancoMensal(dados);
+                // Busca para o Balanço Mensal (Gráfico de Barras)
+                const balancoDados = await buscarBalancoMensal(anoSelecionado);
+                setBalancoMensal(balancoDados);
+
+                // TODO: Descomentar e implementar a busca para Gastos por Categoria (Gráfico de Pizza)
+                // const gastosDados = await buscarGastosPorCategoria(anoSelecionado);
+                // setGastosPorCategoria(gastosDados);
+
             } catch (err: any) {
-                setError("Erro ao carregar dados do balanço mensal: " + (err.response?.data?.message || err.message));
+                setError("Erro ao carregar dados dos gráficos: " + (err.response?.data?.message || err.message));
+                console.error(err); // Log para debug
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchBalancoMensal();
-    }, [anoSelecionado]); // Recarrega sempre que o anoSelecionado mudar
+        fetchData();
+    }, [anoSelecionado]); // Ambos dependem do mesmo ano selecionado
 
-    // Gera uma lista de anos para o dropdown (ex: ano atual - 5 até ano atual + 1)
+    // Gera uma lista de anos para o dropdown (ex: ano atual - 3 até ano atual + 3)
     const anosDisponiveis = Array.from({ length: 7 }, (_, i) => new Date().getFullYear() - 3 + i);
 
     return (
         <div className="c-card">
-            <h1>Dashboard</h1>
+            <h1>Dashboard Financeiro</h1>
 
+            {/* Input de filtro de ano - ÚNICO para todos os gráficos */}
             <div className="mb-3">
                 <label htmlFor="anoSelect" className="form-label me-2">Ano:</label>
                 <select
@@ -126,19 +57,35 @@ function Dashboard() {
                 </select>
             </div>
 
-            {loading && <p>Carregando dados do gráfico...</p>}
+            {loading && <p>Carregando dados dos gráficos...</p>}
             {error && <div className="alert alert-danger">{error}</div>}
 
-            {!loading && !error && balancoMensal.length > 0 && (
-                <div className="grafico-card">
-                    <div className="grafico-barra">
-                        <Bar options={options} data={data} />
+            {!loading && !error && (
+                <>
+                    {/* Componente Gráfico de Barras */}
+                    <div className="mb-4" style={{ height: '400px' }}>
+                        <BarChart
+                            data={balancoMensal}
+                            anoSelecionado={anoSelecionado}
+                        />
                     </div>
-                </div>
+
+                    {/* TODO: Descomentar este bloco quando tiver o componente PieChartComponent e os dados */}
+                    {/* Componente Gráfico de Pizza/Rosca */}
+                    {/*
+                    <div style={{ height: '400px' }}>
+                        <PieChartComponent
+                            data={gastosPorCategoria}
+                            anoSelecionado={anoSelecionado}
+                        />
+                    </div>
+                    */}
+                </>
             )}
-            {!loading && !error && balancoMensal.length === 0 && (
-                <div className="alert alert-info">
-                    Nenhum dado de balanço mensal encontrado para o ano de {anoSelecionado}.
+
+            {!loading && !error && balancoMensal.length === 0 && gastosPorCategoria.length === 0 && (
+                <div className="alert alert-info mt-4">
+                    Nenhum dado financeiro encontrado para o ano de {anoSelecionado}.
                 </div>
             )}
         </div>

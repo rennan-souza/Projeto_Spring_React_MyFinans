@@ -1,9 +1,6 @@
 package com.projeto.myfinans.service;
 
-import com.projeto.myfinans.dto.BalancoMensalDTO;
-import com.projeto.myfinans.dto.LancamentoQueryResultDTO;
-import com.projeto.myfinans.dto.LancamentoRequestDTO;
-import com.projeto.myfinans.dto.LancamentoResponseDTO;
+import com.projeto.myfinans.dto.*;
 import com.projeto.myfinans.entity.Lancamento;
 import com.projeto.myfinans.entity.SubcategoriaLancamento;
 import com.projeto.myfinans.entity.Usuario;
@@ -93,6 +90,20 @@ public class LancamentoService {
                         (String) row[0],         // mesAno
                         (BigDecimal) row[1],     // totalEntradas
                         (BigDecimal) row[2]      // totalSaidas
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<GastoPorCategoriaDTO> buscarGastosPorCategoria(int ano) {
+        Long usuarioId = authorizationService.usuarioLogado().getId();
+
+        List<Object[]> resultadosRaw = lancamentoRepository.buscarGastosPorCategoria(usuarioId, ano);
+
+        return resultadosRaw.stream()
+                .map(row -> new GastoPorCategoriaDTO(
+                        (String) row[0],         // categoriaNome
+                        (BigDecimal) row[1]      // totalGasto
                 ))
                 .collect(Collectors.toList());
     }

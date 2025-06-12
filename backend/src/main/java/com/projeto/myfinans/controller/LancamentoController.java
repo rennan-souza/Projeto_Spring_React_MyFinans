@@ -1,9 +1,6 @@
 package com.projeto.myfinans.controller;
 
-import com.projeto.myfinans.dto.BalancoMensalDTO;
-import com.projeto.myfinans.dto.LancamentoQueryResultDTO;
-import com.projeto.myfinans.dto.LancamentoRequestDTO;
-import com.projeto.myfinans.dto.LancamentoResponseDTO;
+import com.projeto.myfinans.dto.*;
 import com.projeto.myfinans.service.AuthorizationService;
 import com.projeto.myfinans.service.LancamentoService;
 import jakarta.validation.Valid;
@@ -55,5 +52,12 @@ public class LancamentoController {
     public ResponseEntity<List<BalancoMensalDTO>> getBalancoMensal(@RequestParam int ano) {
         List<BalancoMensalDTO> balanco = lancamentoService.buscarBalancoMensal(ano);
         return ResponseEntity.ok(balanco);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    @GetMapping("/relatorios/gastos-por-categoria")
+    public ResponseEntity<List<GastoPorCategoriaDTO>> getGastosPorCategoria(@RequestParam int ano) {
+        List<GastoPorCategoriaDTO> gastos = lancamentoService.buscarGastosPorCategoria(ano);
+        return ResponseEntity.ok(gastos);
     }
 }
