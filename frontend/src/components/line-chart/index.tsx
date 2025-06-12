@@ -2,32 +2,53 @@ import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
-    BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import type { BalancoMensalType } from '../../types/BalancoMensalType';
 
-// Registrar os componentes necessários do Chart.js
+// Registrar os componentes necessários do Chart.js para gráficos de linha
 ChartJS.register(
     CategoryScale,
     LinearScale,
-    BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend
 );
 
-// Definir as props esperadas para este componente
-type BarChartProps = {
-    data: BalancoMensalType[]; // Os dados já processados do balanço mensal
-    anoSelecionado: number;     // O ano que está sendo exibido
+type SaldoTrendChartProps = {
+    data: BalancoMensalType[];
+    anoSelecionado: number;
 };
 
-function BarChart({ data, anoSelecionado }: BarChartProps) {
-    // Opções do gráfico (configuração visual) - Movidas para cá
+function LineChart({ data, anoSelecionado }: SaldoTrendChartProps) {
+
+    // Prepara os dados para o Chart.js
+    const chartData = {
+        labels: data.map(item => {
+            const [ano, mes] = item.mesAno.split('-');
+            const date = new Date(parseInt(ano), parseInt(mes) - 1); // Mês é 0-indexed no JS
+            return new Intl.DateTimeFormat('pt-BR', { month: 'short', year: 'numeric' }).format(date);
+        }),
+        datasets: [
+            {
+                label: 'Saldo Mensal',
+                data: data.map(item => item.saldoMensal),
+                borderColor: 'rgba(75, 192, 192, 1)', // Cor da linha
+                backgroundColor: 'rgba(75, 192, 192, 0.4)', // Cor da área abaixo da linha (opcional)
+                tension: 0.3, // Curvatura da linha
+                fill: true, // Preenche a área abaixo da linha
+            },
+        ],
+    };
+
+    // Opções do gráfico
     const options = {
         responsive: true,
         maintainAspectRatio: false,
@@ -37,7 +58,7 @@ function BarChart({ data, anoSelecionado }: BarChartProps) {
             },
             title: {
                 display: true,
-                text: `Balanço Mensal - ${anoSelecionado}`,
+                text: `Tendência do Saldo Mensal - ${anoSelecionado}`,
             },
             tooltip: {
                 callbacks: {
@@ -56,7 +77,7 @@ function BarChart({ data, anoSelecionado }: BarChartProps) {
         },
         scales: {
             y: {
-                beginAtZero: true,
+                beginAtZero: false, // O saldo pode ser negativo
                 ticks: {
                     callback: function (value: string | number) {
                         return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value));
@@ -66,41 +87,22 @@ function BarChart({ data, anoSelecionado }: BarChartProps) {
         }
     };
 
-    const chartData = {
-        labels: data.map(item => {
-            const [ano, mes] = item.mesAno.split('-');
-            return `${mes}/${ano}`; // Formato "MM/AAAA" para os labels do eixo X
-        }),
-        datasets: [
-            {
-                label: 'Entradas',
-                data: data.map(item => item.totalEntradas),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)', // Cor verde-água para entradas
-            },
-            {
-                label: 'Saídas',
-                data: data.map(item => item.totalSaidas),
-                backgroundColor: 'rgba(255, 99, 132, 0.6)', // Cor vermelha para saídas
-            },
-        ],
-    };
-
     // Mensagem se não houver dados
     if (data.length === 0) {
         return (
             <div className="alert alert-info">
-                Nenhum dado de balanço mensal disponível para o ano de {anoSelecionado}.
+                Nenhum dado de saldo mensal disponível para o ano de {anoSelecionado}.
             </div>
         );
     }
 
     return (
         <div className="chart-card">
-            <div className="bar-chart">
-                <Bar options={options} data={chartData} />
+            <div className="line-chart">
+                <Line options={options} data={chartData} />
             </div>
         </div>
     );
 }
 
-export default BarChart;
+export default LineChart;

@@ -4,6 +4,7 @@ import type { BalancoMensalType } from '../../../types/BalancoMensalType';
 import type { GastoPorCategoriaType } from '../../../types/GastoPorCategoriaType';
 import BarChart from '../../../components/bar-chart';
 import PieChart from '../../../components/pie-chart';
+import LineChart from '../../../components/line-chart';
 
 function Dashboard() {
     const [balancoMensal, setBalancoMensal] = useState<BalancoMensalType[]>([]);
@@ -17,11 +18,9 @@ function Dashboard() {
             setLoading(true);
             setError(null);
             try {
-                // Busca para o Balanço Mensal (Gráfico de Barras)
                 const balancoDados = await buscarBalancoMensal(anoSelecionado);
                 setBalancoMensal(balancoDados);
 
-                // Busca para Gastos por Categoria (Gráfico de Pizza)
                 const gastosDados = await buscarGastosPorCategoria(anoSelecionado);
                 setGastosPorCategoria(gastosDados);
 
@@ -68,6 +67,11 @@ function Dashboard() {
 
                     <PieChart
                         data={gastosPorCategoria}
+                        anoSelecionado={anoSelecionado}
+                    />
+
+                    <LineChart
+                        data={balancoMensal} // Usa os mesmos dados do balanço mensal
                         anoSelecionado={anoSelecionado}
                     />
                 </>

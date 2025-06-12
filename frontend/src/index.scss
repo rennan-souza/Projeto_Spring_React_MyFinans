@@ -186,6 +186,7 @@ select:disabled {
 
 .chart-card {
     overflow-x: auto;
+    margin-bottom: 30px;
 }
 
 .bar-chart {
@@ -195,6 +196,12 @@ select:disabled {
 }
 
 .pie-chart {
+    width: 100%;
+    min-width: 800px;
+    height: 300px;
+}
+
+.line-chart {
     width: 100%;
     min-width: 800px;
     height: 300px;
