@@ -1,5 +1,5 @@
 export interface BalancoMensalType {
-    mesAno: string; // Ex: "2024-01"
+    mesAno: string;
     totalEntradas: number;
     totalSaidas: number;
     saldoMensal: number;

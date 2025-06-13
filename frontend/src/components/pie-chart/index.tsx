@@ -12,8 +12,8 @@ type PieChartProps = {
 };
 
 function PieChart({ data, anoSelecionado }: PieChartProps) {
+
     // Cores para as fatias do gráfico de pizza
-    // Você pode expandir esta lista ou gerar dinamicamente
     const backgroundColors = [
         'rgba(255, 99, 132, 0.6)', // Vermelho
         'rgba(54, 162, 235, 0.6)', // Azul
@@ -48,7 +48,7 @@ function PieChart({ data, anoSelecionado }: PieChartProps) {
         maintainAspectRatio: false,
         plugins: {
             legend: {
-                position: 'left' as const, // Legenda à direita para não atrapalhar o gráfico
+                position: 'left' as const,
                 labels: {
                     boxWidth: 20,
                     padding: 10,

@@ -27,7 +27,8 @@ type BarChartProps = {
 };
 
 function BarChart({ data, anoSelecionado }: BarChartProps) {
-    // Opções do gráfico (configuração visual) - Movidas para cá
+    
+    // Opções do gráfico (configuração visual)
     const options = {
         responsive: true,
         maintainAspectRatio: false,
