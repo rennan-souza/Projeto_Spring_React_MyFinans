@@ -97,10 +97,8 @@ function LineChart({ data, anoSelecionado }: SaldoTrendChartProps) {
     }
 
     return (
-        <div className="chart-card">
-            <div className="line-chart">
-                <Line options={options} data={chartData} />
-            </div>
+        <div className="chart-container">
+            <Line options={options} data={chartData} />
         </div>
     );
 }

@@ -59,22 +59,40 @@ function Dashboard() {
             {error && <div className="alert alert-danger">{error}</div>}
 
             {!loading && !error && (
-                <>
-                    <BarChart
-                        data={balancoMensal}
-                        anoSelecionado={anoSelecionado}
-                    />
+                <div className="row">
+                    <div className="col-lg-6">
+                        <div className="card mb-2">
+                            <div className="card-body">
+                                <BarChart
+                                    data={balancoMensal}
+                                    anoSelecionado={anoSelecionado}
+                                />
+                            </div>
+                        </div>
+                    </div>
 
-                    <PieChart
-                        data={gastosPorCategoria}
-                        anoSelecionado={anoSelecionado}
-                    />
+                    <div className="col-lg-6">
+                        <div className="card mb-2">
+                            <div className="card-body">
+                                <PieChart
+                                    data={gastosPorCategoria}
+                                    anoSelecionado={anoSelecionado}
+                                />
+                            </div>
+                        </div>
+                    </div>
 
-                    <LineChart
-                        data={balancoMensal} // Usa os mesmos dados do balanço mensal
-                        anoSelecionado={anoSelecionado}
-                    />
-                </>
+                    <div className="col-lg-12">
+                        <div className="card mb-2">
+                            <div className="card-body">
+                                <LineChart
+                                    data={balancoMensal} // Usa os mesmos dados do balanço mensal
+                                    anoSelecionado={anoSelecionado}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )}
 
             {!loading && !error && balancoMensal.length === 0 && gastosPorCategoria.length === 0 && (

@@ -82,10 +82,8 @@ function PieChart({ data, anoSelecionado }: PieChartProps) {
     }
 
     return (
-        <div className="chart-card">
-            <div className="pie-chart">
-                <Doughnut data={chartData} options={options} />
-            </div>
+        <div className="chart-container">
+            <Doughnut data={chartData} options={options} />
         </div>
     );
 }

@@ -1,16 +1,15 @@
-// $primary: #0d6efd;
-$primary: #ffc107;
+$primary: #0d6efd;
 $secondary: #6c757d;
 $success: #198754;
 $info: #0dcaf0;
 $warning: #ffc107;
 $danger: #dc3545;
-$light: #dee2e6;
+$light: #e9ecef;
 $dark: #212529;
 
 $white: #fff;
-$border-color: #ced4da;
-$body-bg: $light;
+$border-color: #dee2e6;
+$body-bg: $white;
 $body-color: $dark;
 
 .page-link {
@@ -78,12 +77,12 @@ select:disabled {
 .c-navbar {
     width: 100%;
     height: 60px;
-    background-color: $primary;
+    background-color: $white;
     padding: 0 10px;
     display: flex;
     align-items: center;
     position: fixed;
-    z-index: 10;
+    z-index: 9;
     top: 0;
 }
 
@@ -131,15 +130,28 @@ select:disabled {
 }
 
 .c-sidebar {
-    width: 240px;
+    width: 260px;
     height: 100vh;
-    background-color: $white;
-    border-right: 1px solid $border-color;
-    margin-top: 60px;
+    background-color: $light;
     position: fixed;
-    z-index: 9;
+    z-index: 10;
     top: 0;
     left: 0;
+}
+
+.c-sidebar-logo-container {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.c-sidebar-logo-container a {
+    text-decoration: none;
+    color: $dark !important;
+    font-size: 32px;
+    background-color: transparent !important;
 }
 
 .c-sidebar a {
@@ -159,6 +171,7 @@ select:disabled {
 }
 
 .c-sidebar a:hover {
+    background-color: rgb(13, 110, 253, 0.1);
     color: $primary;
 }
 
@@ -167,7 +180,7 @@ select:disabled {
 }
 
 .content {
-    margin: 80px 20px 10px 260px;
+    margin: 60px 20px 10px 280px;
 }
 
 .c-card {
@@ -176,30 +189,24 @@ select:disabled {
     background-color: $white;
     padding: 20px;
     border: 1px solid $border-color;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
-.chart-card {
-    overflow-x: auto;
-    margin-bottom: 30px;
+label {
+    font-size: 12px !important;
 }
 
-.bar-chart {
-    width: 100%;
-    min-width: 800px;
-    height: 300px;
+.w-350 {
+    width: 350px;
+    max-width: 100%;
 }
 
-.pie-chart {
-    width: 100%;
-    min-width: 800px;
-    height: 300px;
+.fs-13 {
+    font-size: 13px !important;
 }
 
-.line-chart {
-    width: 100%;
-    min-width: 800px;
-    height: 300px;
+.chart-container {
+    height: 350px;
 }
 
 @media(max-width: 576px) {

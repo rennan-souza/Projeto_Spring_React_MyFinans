@@ -6,6 +6,13 @@ function Sidebar() {
         <>
             <div className="sidebar-bg" id="sidebarBg" onClick={sidebarExpand}></div>
             <div className="c-sidebar" id="sidebar">
+
+                <div className="c-sidebar-logo-container">
+                    <NavLink to="/" className="flex-column">
+                        <i className="bi bi-coin fs-1"></i>
+                        MyFinans
+                    </NavLink>
+                </div>
                 <NavLink to="/dashboard" className={({ isActive }) => isActive ? "c-sidebar-link-active" : ""} onClick={removeSidebarExpand}>
                     <i className="bi bi-graph-up"></i>
                     Dashboard
@@ -21,7 +28,7 @@ function Sidebar() {
                     Buscar lançamentos
                 </NavLink>
 
-                <NavLink to="/buscar-lancamentos"  onClick={removeSidebarExpand}>
+                <NavLink to="/buscar-lancamentos" onClick={removeSidebarExpand}>
                     <i className="bi bi-person-fill-gear"></i>
                     Meus dados
                 </NavLink>

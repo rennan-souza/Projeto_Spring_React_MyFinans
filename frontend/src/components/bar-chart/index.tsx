@@ -27,7 +27,7 @@ type BarChartProps = {
 };
 
 function BarChart({ data, anoSelecionado }: BarChartProps) {
-    
+
     // Opções do gráfico (configuração visual)
     const options = {
         responsive: true,
@@ -96,10 +96,8 @@ function BarChart({ data, anoSelecionado }: BarChartProps) {
     }
 
     return (
-        <div className="chart-card">
-            <div className="bar-chart">
-                <Bar options={options} data={chartData} />
-            </div>
+        <div className="chart-container">
+            <Bar options={options} data={chartData} />
         </div>
     );
 }

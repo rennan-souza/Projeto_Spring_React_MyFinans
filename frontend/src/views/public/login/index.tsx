@@ -44,7 +44,7 @@ function Login() {
 
     return (
         <div className="container">
-            <div className="c-card mt-5">
+            <div className="c-card mt-5 m-auto w-350">
                 <div className="text-center mb-4">
                     <h1 className="mb-4">
                         <i className="bi bi-coin"></i>

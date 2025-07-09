@@ -46,7 +46,7 @@ function CriarConta() {
 
     return (
         <div className="container">
-            <div className="c-card mt-5">
+            <div className="c-card mt-5 m-auto w-350">
                 <div className="text-center mb-4">
                     <h1 className="mb-4">
                         <i className="bi bi-coin"></i>
@@ -93,7 +93,7 @@ function CriarConta() {
                         />
                         <span className="text-danger fs-10">{listaDeErros?.email}</span>
                     </div>
-                    <div className="mb-2">
+                    <div className="mb-3">
                         <label>Senha</label>
                         <input
                             type="password"
@@ -106,7 +106,7 @@ function CriarConta() {
                         {listaDeErros?.senha ? (
                             <span className="text-danger">{listaDeErros.senha}</span>
                         ) : (
-                            <span>A senha deve ter de 6 a 12 caracteres</span>
+                            <span className="fs-13">A senha deve ter de 6 a 12 caracteres</span>
                         )}
 
                     </div>

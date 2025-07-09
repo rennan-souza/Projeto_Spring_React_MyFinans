@@ -1,5 +1,3 @@
-// src/main/webapp/src/components/Lancamentos/BuscarLancamentos.tsx
-
 import { useEffect, useState, useCallback } from "react";
 import type { TipoLancamentoType } from "../../../../types/TipoLancamentoType";
 import type { CategoriaLancamentoType } from "../../../../types/CategoriaLancamentoType";
@@ -224,7 +222,7 @@ function BuscarLancamentos() {
             <h1>Buscar lançamentos</h1>
             <form onSubmit={handleFiltrar}>
                 <div className="row">
-                    <div className="col-lg-5">
+                    <div className="col-lg-4">
                         <div className="mb-3">
                             <label htmlFor="tituloInput">Título</label>
                             <input
@@ -236,7 +234,7 @@ function BuscarLancamentos() {
                             />
                         </div>
                     </div>
-                    <div className="col-lg-3">
+                    <div className="col-lg-4">
                         <div className="mb-3">
                             <label htmlFor="dataInicioInput">Data Início</label>
                             <input
@@ -248,7 +246,7 @@ function BuscarLancamentos() {
                             />
                         </div>
                     </div>
-                    <div className="col-lg-3">
+                    <div className="col-lg-4">
                         <div className="mb-3">
                             <label htmlFor="dataFimInput">Data Fim</label>
                             <input
@@ -260,7 +258,7 @@ function BuscarLancamentos() {
                             />
                         </div>
                     </div>
-                    <div className="col-lg-2">
+                    <div className="col-lg-4">
                         <div className="mb-3">
                             <label htmlFor="tipoLancamentoSelect">Tipo de lançamento</label>
                             <select
@@ -278,7 +276,7 @@ function BuscarLancamentos() {
                             </select>
                         </div>
                     </div>
-                    <div className="col-lg-2">
+                    <div className="col-lg-4">
                         <div className="mb-3">
                             <label htmlFor="categoriaSelect">Categoria</label>
                             <select
@@ -297,7 +295,7 @@ function BuscarLancamentos() {
                             </select>
                         </div>
                     </div>
-                    <div className="col-lg-2">
+                    <div className="col-lg-4">
                         <div className="mb-3">
                             <label htmlFor="subcategoriaSelect">Subcategoria</label>
                             <select
@@ -348,33 +346,39 @@ function BuscarLancamentos() {
             )}
 
             <div className="table-responsive my-2">
-                <table className="table table-primary">
+                <table className="table table-primary table-hover">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Titulo</th>
                             <th>Tipo</th>
                             <th>Categoria</th>
                             <th>Subcategoria</th>
                             <th>Valor</th>
                             <th>Data</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {lancamentosParaExibir.length === 0 ? (
                             <tr>
-                                <td colSpan={7} className="text-center">Nenhum lançamento encontrado.</td>
+                                <td colSpan={9} className="text-center">Nenhum lançamento encontrado.</td>
                             </tr>
                         ) : (
                             lancamentosParaExibir.map((x) => (
                                 <tr key={x.id}>
-                                    <td>{x.id}</td>
                                     <td>{x.titulo}</td>
                                     <td>{x.tipoLancamento === 'Entrada' ? <span className="badge bg-success">{x.tipoLancamento}</span> : <span className="badge bg-danger">{x.tipoLancamento}</span>}</td>
                                     <td>{x.categoria}</td>
                                     <td>{x.subcategoria}</td>
                                     <td>{x.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                                     <td>{x.data}</td>
+                                    <td className="text-center">
+                                        <a href="#" className="text-dark"><i className="bi bi-pencil-square"></i></a>
+                                    </td>
+                                    <td className="text-center">
+                                        <a href="#" className="text-dark"><i className="bi bi-trash"></i></a>
+                                    </td>
                                 </tr>
                             ))
                         )}
